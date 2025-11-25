@@ -1,0 +1,94 @@
+---
+import Windows98Layout from '../layouts/Windows98Layout.astro';
+import DesktopIcon from '../components/DesktopIcon.astro';
+import Window from '../components/Window.astro';
+
+const credits = `Windows 98 Portfolio
+--------------------
+Inspired by: premkumar.vercel.app
+Icons from: github.com/infofintech/memphis
+Implementation inspired by: 98.js.org
+Built with: Astro, Vanilla JS, ❤️`;
+---
+
+<Windows98Layout>
+  <DesktopIcon label="Biography" iconPath="/icons/user.png" x="20" y="20" onClick={() => document.getElementById('bio-win').style.display='block'} />
+  <DesktopIcon label="Résumé" iconPath="/icons/notepad.png" x="20" y="80" onClick={() => document.getElementById('resume-win').style.display='block'} />
+  <DesktopIcon label="Projects" iconPath="/icons/folder.png" x="20" y="140" onClick={() => document.getElementById('projects-win').style.display='block'} />
+  <DesktopIcon label="Mail" iconPath="/icons/mail.png" x="20" y="200" onClick={() => document.getElementById('mail-win').style.display='block'} />
+  <DesktopIcon label="My Computer" iconPath="/icons/computer.png" x="20" y="260" onClick={() => document.getElementById('computer-win').style.display='block'} />
+  <DesktopIcon label="Recycle Bin" iconPath="/icons/recycle-bin.png" x="20" y="320" onClick={() => document.getElementById('recycle-win').style.display='block'} />
+  <DesktopIcon label="Internet Explorer" iconPath="/icons/internet-explorer.png" x="20" y="380" onClick={() => location.href='/blog/'} />
+  <DesktopIcon label="My Pixel Art" iconPath="/icons/my-pictures.png" x="20" y="440" onClick={() => location.href='/pixel-art/'} />
+  <DesktopIcon label="CREDITS.txt" iconPath="/icons/notepad-file.png" x="20" y="500" onClick={() => openNotepad(credits, 'CREDITS.txt')} />
+
+  <Window id="bio-win" title="Biography" x="150" y="100">
+    <p>Hi! I'm a developer passionate about retro computing and clean code.</p>
+  </Window>
+  <Window id="resume-win" title="Résumé" x="200" y="120">
+    <p>• Frontend Developer<br>• Astro, TypeScript, Vanilla JS<br>• Windows 98 Enthusiast</p>
+  </Window>
+  <Window id="projects-win" title="Projects" x="250" y="140">
+    <ul>
+      <li>Windows 98 Portfolio (this one!)</li>
+      <li>Retro Terminal Emulator</li>
+    </ul>
+  </Window>
+  <Window id="mail-win" title="Mail" x="300" y="160">
+    <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+  </Window>
+  <Window id="computer-win" title="My Computer" x="350" y="180">
+    <p>C:</p>
+    <p>• Windows 98 SE</p>
+    <p>• Portfolio (this site)</p>
+    <p>• 40 GB Free Space</p>
+  </Window>
+  <Window id="recycle-win" title="Recycle Bin" x="400" y="200">
+    <p>The Recycle Bin is empty.</p>
+  </Window>
+
+  <div class="taskbar">
+    <button class="start-button" id="start-button">Start</button>
+    <div id="taskbar-clock">6:36 PM</div>
+  </div>
+
+  <script>
+    function openNotepad(content, title) {
+      let win = document.getElementById('dynamic-notepad');
+      if (win) {
+        win.querySelector('textarea').value = content;
+        win.querySelector('.window-title-bar span').textContent = title;
+        win.style.display = 'block';
+        return;
+      }
+      win = document.createElement('div');
+      win.id = 'dynamic-notepad';
+      win.className = 'window';
+      win.innerHTML = `
+        <div class="window-title-bar">
+          <span>${title}</span>
+          <span class="window-close-btn">🗙</span>
+        </div>
+        <div class="window-content" style="padding:0;">
+          <div class="notepad-menu">File Edit View Help</div>
+          <textarea class="notepad-textarea" style="width:100%;height:200px;font-family:monospace;">${content}</textarea>
+        </div>
+      `;
+      document.body.appendChild(win);
+      // Simulasi drag & close (sederhana)
+      win.querySelector('.window-close-btn').onclick = () => win.style.display = 'none';
+    }
+
+    // Jam real-time
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours() % 12;
+      hours = hours === 0 ? 12 : hours;
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+      document.getElementById('taskbar-clock').textContent = `${hours}:${minutes} ${ampm}`;
+    }
+    setInterval(updateClock, 60000);
+    updateClock();
+  </script>
+</Windows98Layout>
