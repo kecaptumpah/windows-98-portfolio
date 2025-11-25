@@ -1,0 +1,25 @@
+---
+import Windows98Layout from '../../layouts/Windows98Layout.astro';
+import Window from '../../components/Window.astro';
+import { getCollection } from 'astro:content';
+
+const arts = await getCollection('pixelArt');
+arts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Windows98Layout title="My Pixel Art Gallery">
+  <Window title="My Pixel Art Gallery" x="100" y="80">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:16px;">
+      {arts.map(art => (
+        <a href={`/pixel-art/${art.slug}/`} style="text-align:center;text-decoration:none;color:black;">
+          <img 
+            src={art.data.thumbnail} 
+            alt={art.data.title}
+            style="image-rendering:pixelated;width:100%;height:auto;"
+          />
+          <div>{art.data.title}</div>
+        </a>
+      ))}
+    </div>
+  </Window>
+</Windows98Layout>
